@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+{% load django_bootstrap5 %}
+{% load bootstrap_icons %}
+{% load static %}
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% bootstrap_css %}
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="stylesheet" href="{% static 'bootstrap_icons/css/bootstrap_icons.css' %}">
+    <link rel="stylesheet" href="{% static 'css/register.css' %}">
+    <title>Register</title>
+</head>
+
+<body>
+    <section class="register d-flex">
+        <div class="left container d-flex justify-content-center align-items-center flex-column">
+            <div class="mb-5">
+                {% include 'logo.html' %}
+            </div>
+            <div class="mx-auto">
+                <img src="{% static 'images/registerbanner.jpg' %}" alt="loan" class="registerbanner img-fluid">
+            </div>
+            <p>
+            <h3 class="fw-bold">Welcome to LNT!</h3>
+            <p class="text-center">
+                <span>Start managing your loans faster and better.</span>
+                <br>
+                <span>We help you keep track, and remember those loans that you're more likely to forget</span>
+            </p>
+        </div>
+        <div class="container right container d-flex justify-content-center align-items-center flex-column">
+            <div class="registration-form-logo d-none">
+                {% include 'logo.html' %}
+            </div>
+
+            <h3 class="mb-3 pt-5">Sign up</h3>
+
+            <form method="post">
+                {% csrf_token %}
+
+                {% bootstrap_form form %}
+
+                <button class="btn btn-success w-100">Sign up</button>
+            </form>
+
+            <p class="small my-2">or</p>
+
+            <div>
+                <button class="btn btn-outline-dark">
+                    {% bs_icon 'google' %} Google
+                </button>
+            </div>
+
+            <div>
+                <p class="fw-light small mt-3">Already have an account? <a href="{% url 'login' %}">Login</a></p>
+            </div>
+        </div>
+    </section>
+
+    {% bootstrap_javascript %}
+</body>
+
+</html>

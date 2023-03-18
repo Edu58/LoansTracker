@@ -2,6 +2,8 @@
     box-sizing: border-box;
     scroll-behavior: smooth;
     text-decoration: none;
+    --bggray: #f5f7f9;
+    --primarycolor: #1d2145;
 }
 
 
@@ -99,7 +101,7 @@ body {
 }
 
 section .sidebar {
-    background: #1d2145;
+    background: var(--primarycolor);
 }
 
 section .sidebar a .logo {

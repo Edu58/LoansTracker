@@ -1,0 +1,33 @@
+section .register {
+    min-width: 100vw;
+    min-height: 100vh;
+}
+
+section .left {
+    background: var(--bggray);
+    min-width: 50vw;
+    min-height: 100vh;
+}
+
+section .left img {
+    max-height: 25rem;
+    width: auto;
+}
+
+@media only screen and (max-width: 768px) {
+    section .left {
+        display: none !important;
+    }
+
+    section .right .registration-form-logo {
+        display: block !important;
+    }
+
+    section .right {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+    }
+}

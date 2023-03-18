@@ -1,9 +1,13 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from .models import *
+from .forms import UserCreationForm, UserUpdateForm
 
 
 class CustomUserAdmin(UserAdmin):
+    add_form = UserCreationForm
+    form = UserUpdateForm
+    model = User
     search_fields = (
         "email",
         "first_name",
