@@ -5,7 +5,7 @@ from .models import User
 
 class CustomUserAdmin(UserAdmin):
     search_fields = ('email', 'first_name', 'last_name', )
-    ordering = ('-created_on', )
+    ordering = ('-created_at', )
     list_filter = ('email', 'first_name', 'last_name',  'is_active', 'is_staff', )
     list_display = ('email', 'first_name', 'last_name', 'is_active', 'is_staff', )
 

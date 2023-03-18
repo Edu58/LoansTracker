@@ -32,7 +32,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(_("email address"), unique=True)
     first_name = models.CharField(max_length=30, blank=True)
     last_name = models.CharField(max_length=30, blank=True)
-    created_on = models.DateTimeField(default=timezone.now)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now_add=True)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
 
@@ -42,3 +43,15 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self) -> str:
         return self.email
+
+
+class Loan(models.Model):
+    loanee_full_name = models.CharField(max_length=250)
+    loanee_email = models.EmailField(blank=True)
+    loan_amount = models.FloatField()
+    from_to = models.DateField()
+    to_date = models.DateField()
+    description = models.TextField(null=True, blank=True)
+    notify_loanee = models.BooleanField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now_add=True)
