@@ -1,0 +1,9 @@
+.top-bar p {
+    font-weight: 500;
+}
+
+.analytics .summary-cards {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}

@@ -42,6 +42,12 @@ class UserLoginForm(forms.ModelForm):
         )
 
 
+class ProfileUpdateForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ("email", "first_name", "last_name")
+
+
 class AddLoanForm(forms.ModelForm):
     from_date = forms.DateField(
         required=True,

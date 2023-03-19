@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% load django_bootstrap5 %}
-{% load bootstrap_icons %}
+{% load humanize %}
 {% load static %}
 
 {% block title %}
@@ -18,8 +18,8 @@
     <div class="container d-flex justify-content-between align-items-center pt-3">
         <p class="fs-5">Your Loans dashboard</p>
         <p class="fs-5 bg-success rounded fw-bold text-light p-2">
-            Total KES 1,050
-            <span class="ms-2">{% bs_icon 'patch-question' size="1.4rem" %}</span>
+            Total KES {{total_loan |floatformat:2 | intcomma}}
+            <span class="ms-2"><i class="bi-patch-question"></i></span>
         </p>
     </div>
     <hr>
@@ -30,7 +30,7 @@
         <div class="card">
             <div class="card-header d-flex justify-content-between align-items-center">
                 <p>Loans Profile</p>
-                <p>{% bs_icon 'patch-question' size="1.4rem" %}</p>
+                <p><i class="bi-patch-question"></i></p>
             </div>
 
             <div class="card-body">
@@ -63,7 +63,7 @@
         <div class="card w-50 me-3">
             <div class="card-header d-flex justify-content-between align-items-center">
                 <p>Monthly lending</p>
-                <p>{% bs_icon 'patch-question' size="1.4rem" %}</p>
+                <p><i class="bi-patch-question"></i></p>
             </div>
             <div class="card-body">
                 <p class="small">Week 1</p>
@@ -95,7 +95,7 @@
         <div class="card w-50">
             <div class="card-header d-flex justify-content-between align-items-center">
                 <p>Monthly repayments</p>
-                <p>{% bs_icon 'patch-question' size="1.4rem" %}</p>
+                <p><i class="bi-patch-question"></i></p>
             </div>
             <div class="card-body">
 

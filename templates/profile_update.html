@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load django_bootstrap5 %}
+{% load static %}
+
+{% block title %}
+<title>Profile</title>
+{% endblock title %}
+
+{% block styles %}
+{{block.super}}
+<link rel="stylesheet" href="{% static 'css/profile_update.css' %}">
+{% endblock styles %}
+
+{% block content %}
+<div class="top-bar">
+    <div class="container d-flex justify-content-between align-items-center pt-3">
+        <p class="fs-5">Profile</p>
+    </div>
+    <hr>
+</div>
+
+<div class="container">
+    {% bootstrap_messages %}
+</div>
+
+<div class="update-profile mx-auto mt-5">
+    <div class="text-center mb-3">
+        <div>
+            <i class="bi-journal-richtext fs-1"></i>
+        </div>
+        <h2 class="fw-bold">Lets update your profile...</h2>
+        <p>Fill in the form below to please</p>
+    </div>
+
+    <div>
+        <form action="" method="post">
+            {% csrf_token %}
+
+            {% bootstrap_form form %}
+
+            <button type="submit" class="btn btn-success w-100">Update</button>
+        </form>
+    </div>
+</div>
+{% endblock content %}

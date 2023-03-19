@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 {% load django_bootstrap5 %}
-{% load bootstrap_icons %}
 {% load static %}
 <html lang="en">
 
@@ -10,6 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     {% bootstrap_css %}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="{% static 'bootstrap_icons/css/bootstrap_icons.css' %}">
 
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
@@ -26,16 +26,16 @@
 
     <section class="landing d-flex">
         <div class="sidebar d-flex flex-column flex-shrink-0 p-3 text-light min-vh-100" style="width: 20vw;">
-            <span class="mb-4">
+            <p class="mb-4 ms-5">
                 <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-light text-decoration-none">
                     {% include 'logo.html' %}
                 </a>
-            </span>
+            </p>
             <ul class="nav nav-pills flex-column mb-auto">
                 <li class="nav-item mb-2">
                     <a href="#" class="nav-link text-light" aria-current="page">
                         <svg class="bi me-2" width="16" height="16">
-                            {% bs_icon 'house' %}
+                            <i class="bi-house"></i>
                         </svg>
                         Home
                     </a>
@@ -43,7 +43,7 @@
                 <li class="nav-item mb-2">
                     <a href="{% url 'dashboard' %}" class="nav-link text-light">
                         <svg class="bi me-2" width="16" height="16">
-                            {% bs_icon 'speedometer2' %}
+                            <i class="bi-speedometer2"></i>
                         </svg>
                         Dashboard
                     </a>
@@ -51,15 +51,15 @@
                 <li class="nav-item mb-2">
                     <a href="{% url 'view_loans' %}" class="nav-link text-light">
                         <svg class="bi me-2" width="16" height="16">
-                            {% bs_icon 'table' %}
+                            <i class="bi-table"></i>
                         </svg>
                         Loans
                     </a>
                 </li>
                 <li class="nav-item mb-2">
-                    <a href="#" class="nav-link text-light">
+                    <a href="{% url 'view_analytics' %}" class="nav-link text-light">
                         <svg class="bi me-2" width="16" height="16">
-                            {% bs_icon 'grid' %}
+                            <i class="bi-grid"></i>
                         </svg>
                         Analytics
                     </a>
@@ -67,7 +67,7 @@
                 <li class="nav-item mb-2">
                     <a href="#" class="nav-link text-light">
                         <svg class="bi me-2" width="16" height="16">
-                            {% bs_icon 'receipt' %}
+                            <i class="bi-receipt"></i>
                         </svg>
                         Receipts
                     </a>
@@ -82,7 +82,7 @@
                 </a>
                 <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
                     <li><a class="dropdown-item" href="#">Settings</a></li>
-                    <li><a class="dropdown-item" href="#">Profile</a></li>
+                    <li><a class="dropdown-item" href="{% url 'profile_update' %}">Profile</a></li>
                     <li>
                         <hr class="dropdown-divider">
                     </li>

@@ -10,7 +10,7 @@ def register_user(request):
     if request.user.is_authenticated:
         return redirect("dashboard")
 
-    form = UserRegistrationForm()
+    form = UserRegistrationForm
 
     if request.method == "POST":
         form = UserRegistrationForm(request.POST)
@@ -29,7 +29,7 @@ def login_user(request):
     if request.user.is_authenticated:
         return redirect("dashboard")
 
-    form = UserLoginForm()
+    form = UserLoginForm
 
     if request.method == "POST":
         email = request.POST.get("email")
@@ -57,12 +57,35 @@ def logout_user(request):
     return redirect("login")
 
 
+@login_required(login_url="login")
 def dashboard(request):
-    return render(request, "dashboard.html")
+    total_loan = Loan.total_loan_amount(user=request.user)
+    context = {"total_loan": total_loan["total_loan"]}
+    return render(request, "dashboard.html", context)
 
 
+@login_required(login_url="login")
+def profile_update(request):
+    user = User.objects.get(id=request.user.id)
+    form = ProfileUpdateForm(instance=user)
+
+    if request.method == "POST":
+        form = ProfileUpdateForm(request.POST, instance=user)
+
+        if form.is_valid():
+            form.save()
+            messages.success(request, message="Profile updated successfully")
+            return redirect("profile_update")
+
+        messages.success(request, message=form.errors)
+
+    context = {"user": user, "form": form}
+    return render(request, "profile_update.html", context)
+
+
+@login_required(login_url="login")
 def view_loans(request):
-    form = AddLoanForm()
+    form = AddLoanForm
 
     if request.method == "POST":
         form = AddLoanForm(request.POST)
@@ -81,3 +104,8 @@ def view_loans(request):
     total_loan = Loan.total_loan_amount(user=request.user)
     context = {"loans": loans, "total_loan": total_loan["total_loan"], "form": form}
     return render(request, "loans.html", context)
+
+
+@login_required(login_url="login")
+def view_analytics(request):
+    return render(request, "analytics.html")
