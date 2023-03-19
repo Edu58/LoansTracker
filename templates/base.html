@@ -25,14 +25,14 @@
 <body>
 
     <section class="landing d-flex">
-        <div class="sidebar d-flex flex-column flex-shrink-0 p-3 text-light min-vh-100" style="width: 280px;">
+        <div class="sidebar d-flex flex-column flex-shrink-0 p-3 text-light min-vh-100" style="width: 20vw;">
             <span class="mb-4">
                 <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-light text-decoration-none">
                     {% include 'logo.html' %}
                 </a>
             </span>
             <ul class="nav nav-pills flex-column mb-auto">
-                <li class="nav-item">
+                <li class="nav-item mb-2">
                     <a href="#" class="nav-link text-light" aria-current="page">
                         <svg class="bi me-2" width="16" height="16">
                             {% bs_icon 'house' %}
@@ -40,15 +40,15 @@
                         Home
                     </a>
                 </li>
-                <li>
-                    <a href="#" class="nav-link text-light">
+                <li class="nav-item mb-2">
+                    <a href="{% url 'dashboard' %}" class="nav-link text-light">
                         <svg class="bi me-2" width="16" height="16">
                             {% bs_icon 'speedometer2' %}
                         </svg>
                         Dashboard
                     </a>
                 </li>
-                <li>
+                <li class="nav-item mb-2">
                     <a href="#" class="nav-link text-light">
                         <svg class="bi me-2" width="16" height="16">
                             {% bs_icon 'table' %}
@@ -56,7 +56,7 @@
                         Loans
                     </a>
                 </li>
-                <li>
+                <li class="nav-item mb-2">
                     <a href="#" class="nav-link text-light">
                         <svg class="bi me-2" width="16" height="16">
                             {% bs_icon 'grid' %}
@@ -64,10 +64,10 @@
                         Analytics
                     </a>
                 </li>
-                <li>
+                <li class="nav-item mb-2">
                     <a href="#" class="nav-link text-light">
                         <svg class="bi me-2" width="16" height="16">
-                            {% bs_icon 'cash-coin' %}
+                            {% bs_icon 'receipt' %}
                         </svg>
                         Receipts
                     </a>
@@ -91,11 +91,12 @@
             </div>
         </div>
 
-        <section>
+        <section style="width: 80vw;">
             {% block content %}
             {% endblock content %}
         </section>
     </section>
+
 
     {% bootstrap_javascript %}
     {% block scripts %}

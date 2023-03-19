@@ -46,6 +46,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 
 class Loan(models.Model):
+    lender = models.ForeignKey(User, on_delete=models.CASCADE)
     loanee_full_name = models.CharField(max_length=250)
     loanee_email = models.EmailField(blank=True)
     loan_amount = models.FloatField()

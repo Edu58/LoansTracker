@@ -1,0 +1,7 @@
+.top-bar p {
+    font-weight: 500;
+}
+
+.timely-stats .progress-bar {
+  transition: all 3s;
+}

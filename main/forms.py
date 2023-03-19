@@ -1,6 +1,7 @@
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django import forms
 from django.contrib.auth import get_user_model
+from .models import Loan
 
 User = get_user_model()
 
@@ -23,7 +24,11 @@ class UserRegistrationForm(UserCreationForm):
 
     class Meta:
         model = User
-        fields = ('email', 'password1', 'password2',)
+        fields = (
+            "email",
+            "password1",
+            "password2",
+        )
 
 
 class UserLoginForm(forms.ModelForm):
@@ -31,4 +36,13 @@ class UserLoginForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ('email', 'password',)
+        fields = (
+            "email",
+            "password",
+        )
+
+
+class AddLoanForm(forms.ModelForm):
+    class Meta:
+        model = Loan
+        fields = "__all__"
