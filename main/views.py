@@ -134,4 +134,10 @@ def search_loans(request):
 
 @login_required(login_url="login")
 def view_analytics(request):
-    return render(request, "analytics.html")
+    loans = Loan.objects.filter(lender=request.user.id)
+    borrowers = Loan.objects.values('loanee_full_name','loanee_email').filter(lender=request.user.id)
+    context = {
+        "loans": loans,
+        "borrowers": borrowers
+    }
+    return render(request, "analytics.html", context)

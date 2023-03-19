@@ -49,51 +49,62 @@
 
     <div>
         <ul class="nav nav-tabs">
-            <li class="nav-item">
+            <li class="nav-item" id="loans">
                 <a class="nav-link active" href="#">Loans</a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item" id="borrowers">
                 <a class="nav-link" href="#">Borrowers</a>
             </li>
         </ul>
 
         <div>
-            <table class="table table-hover">
+            <table class="table table-hover" id="loans-table">
                 <thead>
                     <tr>
                         <th scope="col">#</th>
                         <th scope="col">Loanee</th>
                         <th scope="col">Loan from</th>
                         <th scope="col">Loan maturity</th>
-                        <th scope="col">Amount</th>
+                        <th scope="col">Amount(KES)</th>
                         <th scope="col">Status</th>
                     </tr>
                 </thead>
                 <tbody>
+                    {% for loan in loans %}
                     <tr>
-                        <th scope="row">1</th>
-                        <td scope="col">Mark</td>
-                        <td scope="col">Otto</td>
-                        <td scope="col">@mdo</td>
-                        <td scope="col">Mark</td>
-                        <td scope="col">Otto</td>
+                        <th scope="row">{{forloop.counter}}</th>
+                        <td scope="col">{{loan.loanee_full_name}}</td>
+                        <td scope="col">{{loan.from_date | date}}</td>
+                        <td scope="col">{{loan.to_date | date}}</td>
+                        <td scope="col">{{loan.loan_amount |floatformat:2 | intcomma}}</td>
+                        <td scope="col">
+                            {% if loan.loan_status %}
+                            <span class="bg-success d-block rounded-circle" style="width: 20px; height: 20px;"></span>
+                            {% else %}
+                            <span class="bg-danger d-block rounded-circle" style="width: 20px; height: 20px;"></span>
+                            {% endif %}
+                        </td>
                     </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <table class="table table-hover" id="borrowers-table">
+                <thead>
                     <tr>
-                        <th scope="row">2</th>
-                        <td scope="col">Jacob</td>
-                        <td scope="col">Thornton</td>
-                        <td scope="col">@fat</td>
-                        <td scope="col">Mark</td>
-                        <td scope="col">Otto</td>
+                        <th scope="col">#</th>
+                        <th scope="col">Borrower name</th>
+                        <th scope="col">Borrower email</th>
                     </tr>
+                </thead>
+                <tbody>
+                    {% for borrower in borrowers %}
                     <tr>
-                        <th scope="row">3</th>
-                        <td scope="col">Larry the Bird</td>
-                        <td scope="col">@twitter</td>
-                        <td scope="col">Mark</td>
-                        <td scope="col">Otto</td>
-                        <td scope="col">@mdo</td>
+                        <th scope="row">{{forloop.counter}}</th>
+                        <td scope="col">{{borrower.loanee_full_name}}</td>
+                        <td scope="col">{{borrower.loanee_email}}</td>
                     </tr>
+                    {% endfor %}
                 </tbody>
             </table>
         </div>
@@ -108,6 +119,9 @@
 <script>
     window.onload = (e) => {
         const ctx = document.getElementById('myChart');
+        const loansTable = document.getElementById("loans-table")
+        const borrowersTable = document.getElementById("borrowers-table")
+        borrowersTable.classList.add('d-none')
 
         const data = {
             labels: [
@@ -137,6 +151,17 @@
                 }
             },
         });
+
+        const loans = document.getElementById("loans")
+        loans.addEventListener('click', (e) => {
+            loansTable.classList.remove('d-none')
+            borrowersTable.classList.add('d-none')
+        })
+
+        borrowers.addEventListener('click', (e) => {
+            loansTable.classList.add('d-none')
+            borrowersTable.classList.remove('d-none')
+        })
     }
 </script>
 {% endblock scripts %}
