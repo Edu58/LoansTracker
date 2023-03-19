@@ -1,11 +1,11 @@
 from django.db import models
-from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import (
     AbstractBaseUser,
     PermissionsMixin,
     BaseUserManager,
 )
+from django.db.models import Sum
 
 
 class CustomUserManager(BaseUserManager):
@@ -51,9 +51,21 @@ class Loan(models.Model):
     loanee_email = models.EmailField(blank=True)
     loan_amount = models.FloatField()
     # interest_rate = models.FloatField(default=0)
-    from_to = models.DateField()
+    from_date = models.DateField()
     to_date = models.DateField()
     description = models.TextField(null=True, blank=True)
+    loan_status = models.BooleanField(default=False)
     notify_loanee = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-created_at"]
+
+    def __str__(self) -> str:
+        return self.loanee_full_name
+
+    @classmethod
+    def total_loan_amount(cls, user):
+        total = cls.objects.filter(lender=user).aggregate(total_loan=Sum("loan_amount"))
+        return total

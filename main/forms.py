@@ -43,6 +43,15 @@ class UserLoginForm(forms.ModelForm):
 
 
 class AddLoanForm(forms.ModelForm):
+    from_date = forms.DateField(
+        required=True,
+        widget=forms.DateInput(attrs={"class": "form-control", "type": "date"}),
+    )
+    to_date = forms.DateField(
+        required=True,
+        widget=forms.DateInput(attrs={"class": "form-control", "type": "date"}),
+    )
+
     class Meta:
         model = Loan
-        fields = "__all__"
+        exclude = ["lender", "loan_status", "created_at", "updated_at"]

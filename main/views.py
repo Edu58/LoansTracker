@@ -3,7 +3,7 @@ from django.contrib import messages
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 
-from .forms import UserRegistrationForm, UserLoginForm
+from .forms import *
 
 # Create your views here.
 def register_user(request):
@@ -61,5 +61,23 @@ def dashboard(request):
     return render(request, "dashboard.html")
 
 
-# def loans(request):
+def view_loans(request):
+    form = AddLoanForm()
 
+    if request.method == "POST":
+        form = AddLoanForm(request.POST)
+
+        if form.is_valid():
+            new_loan = form.save(commit=False)
+            new_loan.lender = request.user
+            new_loan.save()
+
+            messages.success(request, message="Loanee added successfully")
+            return redirect("view_loans")
+
+        messages.success(request, message=form.errors)
+
+    loans = Loan.objects.filter(lender=request.user)
+    total_loan = Loan.total_loan_amount(user=request.user)
+    context = {"loans": loans, "total_loan": total_loan["total_loan"], "form": form}
+    return render(request, "loans.html", context)

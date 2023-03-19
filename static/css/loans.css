@@ -1,0 +1,7 @@
+.top-bar p {
+    font-weight: 500;
+}
+
+.total-card h2 {
+    color: var(--primarycolor);
+}
