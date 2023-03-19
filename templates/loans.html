@@ -40,15 +40,24 @@
 
 <div class="loans-list container">
     <div>
+        <div class="search">
+            <form action="{% url 'search_loans' %}" method="get">
+                <div class="input-group mb-3">
+                    <input type="search" class="form-control" name="search" placeholder="borrower's name">
+                    <button class="btn btn-outline-success" type="submit">Search</button>
+                </div>
+            </form>
+        </div>
         <div class="card">
             <table class="table">
                 <thead class="card-header">
                     <tr>
                         <th scope="col">#</th>
-                        <th scope="col">Loanee</th>
+                        <th scope="col">Borrower</th>
                         <th scope="col">Loan from - Loan maturity</th>
                         <th scope="col">Amount(KES)</th>
                         <th scope="col">Status</th>
+                        <th scope="col">Edit</th>
                     </tr>
                 </thead>
                 <tbody class="card-body">
@@ -64,6 +73,11 @@
                             {% else %}
                             <span class="bg-danger d-block rounded-circle" style="width: 20px; height: 20px;"></span>
                             {% endif %}
+                        </td>
+                        <td scope="col">
+                            <a href="">
+                                <i class="bi bi-pen"></i>
+                            </a>
                         </td>
                     </tr>
                     {% endfor %}

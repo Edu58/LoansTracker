@@ -107,5 +107,31 @@ def view_loans(request):
 
 
 @login_required(login_url="login")
+def search_loans(request):
+    form = AddLoanForm
+
+    if request.method == "POST":
+        form = AddLoanForm(request.POST)
+
+        if form.is_valid():
+            new_loan = form.save(commit=False)
+            new_loan.lender = request.user
+            new_loan.save()
+
+            messages.success(request, message="Loanee added successfully")
+            return redirect("view_loans")
+
+        messages.success(request, message=form.errors)
+
+    borrower = request.GET.get('search')
+    loans = Loan.objects.filter(lender=request.user).filter(
+        loanee_full_name__icontains=borrower
+    )
+    total_loan = Loan.total_loan_amount(user=request.user)
+    context = {"loans": loans, "total_loan": total_loan["total_loan"], "form": form}
+    return render(request, "loans.html", context)
+
+
+@login_required(login_url="login")
 def view_analytics(request):
     return render(request, "analytics.html")
