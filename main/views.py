@@ -1,8 +1,11 @@
+import calendar
 from django.shortcuts import redirect, render
 from django.contrib import messages
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
+
+from datetime import datetime
 
 from .forms import *
 
@@ -64,6 +67,39 @@ def logout_user(request):
 @login_required(login_url="login")
 def dashboard(request):
     total_loan = Loan.total_loan_amount(user=request.user)
+
+    loans = Loan.get_user_current_month_loans(request.user)
+
+    today = datetime.now()
+
+    weeks_of_the_month = calendar.monthcalendar(today.year, today.month)
+
+    week_1_loan_amount = 0;
+    week_2_loan_amount = 0;
+    week_3_loan_amount = 0;
+    week_4_loan_amount = 0;
+    week_5_loan_amount = 0;
+
+    for i in loans:
+        if i.created_at.day in weeks_of_the_month[0]:
+            week_1_loan_amount += i.loan_amount
+        elif i.created_at.day in weeks_of_the_month[1]:
+            week_2_loan_amount += i.loan_amount
+        elif i.created_at.day in weeks_of_the_month[2]:
+            week_3_loan_amount += i.loan_amount
+        elif i.created_at.day in weeks_of_the_month[3]:
+            week_4_loan_amount += i.loan_amount
+        elif i.created_at.day in weeks_of_the_month[4]:
+            week_5_loan_amount += i.loan_amount
+        else:
+            pass
+    
+    week_1_loan_percentage_based_on_total_loans = (week_1_loan_amount/total_loan["total_loan"]) * 100;
+    week_2_loan_percentage_based_on_total_loans = (week_2_loan_amount/total_loan["total_loan"]) * 100;
+    week_3_loan_percentage_based_on_total_loans = (week_3_loan_amount/total_loan["total_loan"]) * 100;
+    week_4_loan_percentage_based_on_total_loans = (week_4_loan_amount/total_loan["total_loan"]) * 100;
+    week_5_loan_percentage_based_on_total_loans = (week_5_loan_amount/total_loan["total_loan"]) * 100;
+
     context = {"total_loan": total_loan["total_loan"]}
     return render(request, "dashboard.html", context)
 
@@ -104,7 +140,7 @@ def view_loans(request):
 
         messages.success(request, message=form.errors)
 
-    loans = Loan.objects.filter(lender=request.user)
+    loans = Loan.get_current_user_loans(request.user)
     total_loan = Loan.total_loan_amount(user=request.user)
     context = {"loans": loans, "total_loan": total_loan["total_loan"], "form": form}
     return render(request, "loans.html", context)

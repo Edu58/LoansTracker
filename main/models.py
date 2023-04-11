@@ -6,6 +6,7 @@ from django.contrib.auth.models import (
     BaseUserManager,
 )
 from django.db.models import Sum
+from datetime import datetime
 
 
 class CustomUserManager(BaseUserManager):
@@ -17,7 +18,6 @@ class CustomUserManager(BaseUserManager):
         return self.create_user(email, password, **other_fields)
 
     def create_user(self, email, password, **other_fields):
-
         if not email:
             raise ValueError(_("You must provide a valid email address"))
 
@@ -66,6 +66,42 @@ class Loan(models.Model):
         return self.loanee_full_name
 
     @classmethod
+    def get_current_user_loans(cls, user):
+        """Get current logged in user loans
+
+        Args:
+            user (User): A User instance
+
+        Returns:
+            Queryset : A Queryset with loans belonging to the current logged in user
+        """
+        loans = cls.objects.filter(lender=user)
+        return loans
+
+    @classmethod
+    def get_user_current_month_loans(cls, user):
+        """Get current month user loans
+
+        Args:
+            user (User): A User instance
+
+        Returns:
+            Queryset : A Queryset with the current month loans belonging to the current logged in user
+        """
+        today = datetime.now()
+        current_month = today.month
+        loans = cls.objects.filter(lender=user).filter(created_at__month=current_month)
+        return loans
+
+    @classmethod
     def total_loan_amount(cls, user):
+        """Total loan amount for the current logged in user
+
+        Args:
+            user (User): A User instance
+
+        Returns:
+            Queryset : A Queryset with the Total loan amount for the current logged in user
+        """
         total = cls.objects.filter(lender=user).aggregate(total_loan=Sum("loan_amount"))
         return total
