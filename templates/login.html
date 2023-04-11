@@ -9,7 +9,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {% bootstrap_css %}
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
-    <link rel="stylesheet" href="{% static 'bootstrap_icons/css/bootstrap_icons.css' %}">
     <link rel="stylesheet" href="{% static 'css/login.css' %}">
     <title>Login</title>
 </head>
@@ -37,14 +36,6 @@
             </div>
 
             <h3 class="mb-3 pt-5">Login</h3>
-
-            {% if messages %}
-            <ul class="messages">
-                {% for message in messages %}
-                <li{% if message.tags %} class="text-danger" {% endif %}>{{ message }}</li>
-                    {% endfor %}
-            </ul>
-            {% endif %}
 
             <form method="post">
                 {% csrf_token %}

@@ -2,15 +2,17 @@ from django.shortcuts import redirect, render
 from django.contrib import messages
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import AuthenticationForm
 
 from .forms import *
+
 
 # Create your views here.
 def register_user(request):
     if request.user.is_authenticated:
         return redirect("dashboard")
 
-    form = UserRegistrationForm
+    form = UserRegistrationForm()
 
     if request.method == "POST":
         form = UserRegistrationForm(request.POST)
@@ -29,23 +31,25 @@ def login_user(request):
     if request.user.is_authenticated:
         return redirect("dashboard")
 
-    form = UserLoginForm
+    form = AuthenticationForm()
 
     if request.method == "POST":
-        email = request.POST.get("email")
-        password = request.POST.get("password")
+        form = AuthenticationForm(request, request.POST)
+        if form.is_valid():
+            email = form.cleaned_data.get("username")
+            password = form.cleaned_data.get("password")
 
-        user = authenticate(request, email=email, password=password)
+            user = authenticate(request, email=email, password=password)
 
-        if user is not None:
-            login(request, user)
-            return redirect("dashboard")
-
-        messages.warning(
-            request, message="User with provided credentials does not exist!"
-        )
-
-    messages.warning(request, message=form.errors)
+            if user is not None:
+                login(request, user)
+                return redirect("dashboard")
+            else:
+                messages.warning(
+                    request, "User with provided credentials does not exist!"
+                )
+        else:
+            messages.warning(request, form.errors)
 
     context = {"form": form}
     return render(request, "login.html", context)
@@ -107,6 +111,48 @@ def view_loans(request):
 
 
 @login_required(login_url="login")
+def loan_detail(request, pk):
+    loan = Loan.objects.filter(pk=pk).first()
+    form = UpdateLoanForm(instance=loan)
+
+    if request.method == "POST":
+        form = UpdateLoanForm(request.POST, instance=loan)
+
+        if form.is_valid():
+            form.save()
+
+            messages.success(request, message="Loan details updated successfully")
+            return redirect("loan_detail", pk=pk)
+
+        messages.success(request, message=form.errors)
+
+    context = {"loan": loan, "form": form}
+    return render(request, "loan.html", context)
+
+
+# @login_required(login_url="login")
+# def update_loan(request, pk):
+#     loan = Loan.objects.get(id=pk)
+#     form = AddLoanForm(instance=loan)
+
+#     if request.method == "POST":
+#         form = AddLoanForm(request.POST, instance=loan)
+
+#         if form.is_valid():
+#             form.save()
+
+#             messages.success(request, message="Loan details updated successfully")
+#             return redirect("view_loans")
+
+#         messages.success(request, message=form.errors)
+
+#     loans = Loan.objects.filter(lender=request.user)
+#     total_loan = Loan.total_loan_amount(user=request.user)
+#     context = {"loans": loans, "total_loan": total_loan["total_loan"], "form": form}
+#     return render(request, "loans.html", context)
+
+
+@login_required(login_url="login")
 def search_loans(request):
     form = AddLoanForm
 
@@ -123,7 +169,7 @@ def search_loans(request):
 
         messages.success(request, message=form.errors)
 
-    borrower = request.GET.get('search')
+    borrower = request.GET.get("search")
     loans = Loan.objects.filter(lender=request.user).filter(
         loanee_full_name__icontains=borrower
     )
@@ -135,9 +181,8 @@ def search_loans(request):
 @login_required(login_url="login")
 def view_analytics(request):
     loans = Loan.objects.filter(lender=request.user.id)
-    borrowers = Loan.objects.values('loanee_full_name','loanee_email').filter(lender=request.user.id)
-    context = {
-        "loans": loans,
-        "borrowers": borrowers
-    }
+    borrowers = Loan.objects.values("loanee_full_name", "loanee_email").filter(
+        lender=request.user.id
+    )
+    context = {"loans": loans, "borrowers": borrowers}
     return render(request, "analytics.html", context)

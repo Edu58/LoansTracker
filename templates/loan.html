@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+{% load django_bootstrap5 %}
+{% load static %}
+{% load humanize %}
+
+{% block title %}
+<title>Loan</title>
+{% endblock title %}
+
+{% block styles %}
+{{block.super}}
+<link rel="stylesheet" href="{% static 'css/loan.css' %}">
+{% endblock styles %}
+
+{% block content %}
+<div class="top-bar">
+    <div class="container d-flex justify-content-between align-items-center pt-3">
+        <p class="fs-5">Loan Detail</p>
+        <p>
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addLoanModal">
+                Edit Loan
+            </button>
+        </p>
+
+    </div>
+    <hr>
+</div>
+
+<div class="container">
+    {% bootstrap_messages %}
+</div>
+
+<div class="loans-detail container">
+    <div class="container">
+        <h2 class="fw-bold text-center text-primary mb-4">Loanee: &nbsp; {{loan.loanee_full_name}}</h2>
+        <div class="row mb-3 text-center">
+            <div class="col fw-bold">
+                Loanee Email
+            </div>
+            <div class="col">
+                {{loan.loanee_email}}
+            </div>
+        </div>
+        <div class="row mb-3 text-center">
+            <div class="col fw-bold">
+                Loan Amount
+            </div>
+            <div class="col">
+                KES {{loan.loan_amount|floatformat:2 | intcomma}}
+            </div>
+        </div>
+        <div class="row mb-3 text-center">
+            <div class="col fw-bold">
+                From Date
+            </div>
+            <div class="col">
+                {{loan.from_date|date}}
+            </div>
+        </div>
+        <div class="row mb-3 text-center">
+            <div class="col fw-bold">
+                Loan Maturity
+            </div>
+            <div class="col">
+                {{loan.to_date|date}}
+            </div>
+        </div>
+        <div class="row mb-3 text-center">
+            <div class="col fw-bold">
+                Description
+            </div>
+            <div class="col">
+                {{loan.description}}
+            </div>
+        </div>
+        <div class="row mb-3 text-center">
+            <div class="col fw-bold">
+                Loan Status
+            </div>
+            <div class="col">
+                {% if loan.loan_status %}
+                <button type="button" class="btn btn-success">PAID</button>
+                {%else%}
+                <button type="button" class="btn btn-danger">UNPAID</button>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="addLoanModal" tabindex="-1" aria-labelledby="addLoanModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Add Loan</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="{% url 'loan_detail' loan.pk %}" method="post">
+                    {% csrf_token %}
+
+                    {% bootstrap_form form %}
+
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-success">Update</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+{% block scripts %}
+{{block.super}}
+{% endblock scripts %}
+{% endblock content %}

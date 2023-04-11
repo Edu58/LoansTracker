@@ -49,7 +49,7 @@
             </form>
         </div>
         <div class="card">
-            <table class="table">
+            <table class="table table-hover">
                 <thead class="card-header">
                     <tr>
                         <th scope="col">#</th>
@@ -57,14 +57,16 @@
                         <th scope="col">Loan from - Loan maturity</th>
                         <th scope="col">Amount(KES)</th>
                         <th scope="col">Status</th>
-                        <th scope="col">Edit</th>
                     </tr>
                 </thead>
                 <tbody class="card-body">
                     {% for loan in loans %}
                     <tr>
                         <th scope="row">{{forloop.counter}}</th>
-                        <td>{{ loan.loanee_full_name }}</td>
+                        <td><a href="{% url 'loan_detail' loan.id %}" class="text-decoration-none">
+                                {{ loan.loanee_full_name }}
+                            </a>
+                        </td>
                         <td>{{ loan.from_date | date }} - {{loan.to_date | date}}</td>
                         <td>{{ loan.loan_amount |floatformat:2 | intcomma}}</td>
                         <td>
@@ -73,11 +75,6 @@
                             {% else %}
                             <span class="bg-danger d-block rounded-circle" style="width: 20px; height: 20px;"></span>
                             {% endif %}
-                        </td>
-                        <td scope="col">
-                            <a href="">
-                                <i class="bi bi-pen"></i>
-                            </a>
                         </td>
                     </tr>
                     {% endfor %}

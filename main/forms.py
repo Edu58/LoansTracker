@@ -31,15 +31,15 @@ class UserRegistrationForm(UserCreationForm):
         )
 
 
-class UserLoginForm(forms.ModelForm):
-    password = forms.CharField(widget=forms.PasswordInput())
+# class UserLoginForm(forms.ModelForm):
+#     password = forms.CharField(widget=forms.PasswordInput())
 
-    class Meta:
-        model = User
-        fields = (
-            "email",
-            "password",
-        )
+#     class Meta:
+#         model = User
+#         fields = (
+#             "email",
+#             "password",
+#         )
 
 
 class ProfileUpdateForm(forms.ModelForm):
@@ -61,3 +61,18 @@ class AddLoanForm(forms.ModelForm):
     class Meta:
         model = Loan
         exclude = ["lender", "loan_status", "created_at", "updated_at"]
+
+
+class UpdateLoanForm(forms.ModelForm):
+    from_date = forms.DateField(
+        required=True,
+        widget=forms.DateInput(attrs={"class": "form-control", "type": "date"}),
+    )
+    to_date = forms.DateField(
+        required=True,
+        widget=forms.DateInput(attrs={"class": "form-control", "type": "date"}),
+    )
+
+    class Meta:
+        model = Loan
+        exclude = ["lender", "notify_loanee", "created_at", "updated_at"]

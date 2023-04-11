@@ -117,11 +117,12 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js"> </script>
 
 <script>
+    const borrowersTable = document.getElementById("borrowers-table")
+    borrowersTable.classList.add('d-none')
+
     window.onload = (e) => {
         const ctx = document.getElementById('myChart');
         const loansTable = document.getElementById("loans-table")
-        const borrowersTable = document.getElementById("borrowers-table")
-        borrowersTable.classList.add('d-none')
 
         const data = {
             labels: [
