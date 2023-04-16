@@ -94,11 +94,18 @@ def dashboard(request):
         else:
             pass
     
-    week_1_loan_percentage_based_on_total_loans = (week_1_loan_amount/total_loan["total_loan"]) * 100;
-    week_2_loan_percentage_based_on_total_loans = (week_2_loan_amount/total_loan["total_loan"]) * 100;
-    week_3_loan_percentage_based_on_total_loans = (week_3_loan_amount/total_loan["total_loan"]) * 100;
-    week_4_loan_percentage_based_on_total_loans = (week_4_loan_amount/total_loan["total_loan"]) * 100;
-    week_5_loan_percentage_based_on_total_loans = (week_5_loan_amount/total_loan["total_loan"]) * 100;
+    if len(total_loan) < 1:
+        week_1_loan_percentage_based_on_total_loans = (week_1_loan_amount/total_loan["total_loan"]) * 100;
+        week_2_loan_percentage_based_on_total_loans = (week_2_loan_amount/total_loan["total_loan"]) * 100;
+        week_3_loan_percentage_based_on_total_loans = (week_3_loan_amount/total_loan["total_loan"]) * 100;
+        week_4_loan_percentage_based_on_total_loans = (week_4_loan_amount/total_loan["total_loan"]) * 100;
+        week_5_loan_percentage_based_on_total_loans = (week_5_loan_amount/total_loan["total_loan"]) * 100;
+    else:
+        week_1_loan_percentage_based_on_total_loans = 0
+        week_2_loan_percentage_based_on_total_loans = 0
+        week_3_loan_percentage_based_on_total_loans = 0
+        week_4_loan_percentage_based_on_total_loans = 0
+        week_5_loan_percentage_based_on_total_loans = 0
 
     context = {"total_loan": total_loan["total_loan"]}
     return render(request, "dashboard.html", context)
